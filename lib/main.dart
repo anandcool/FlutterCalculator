@@ -22,22 +22,54 @@ class MyHome extends StatefulWidget {
   _MyHomeState createState() => _MyHomeState();
 }
 
-Widget CustomButton(String buttonval) {
-  return Expanded(
-    child: OutlineButton(
-      padding: EdgeInsets.all(25),
-      onPressed: () {},
-      child: Text(
-        "$buttonval",
-        style: TextStyle(
-          fontSize: 25,
+class _MyHomeState extends State<MyHome> {
+  Widget CustomButton(String buttonval) {
+    return Expanded(
+      child: OutlineButton(
+        padding: EdgeInsets.all(25),
+        onPressed: () => buttonClicked(buttonval),
+        child: Text(
+          "$buttonval",
+          style: TextStyle(
+            fontSize: 25,
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-class _MyHomeState extends State<MyHome> {
+  int firstnum;
+  int secondnum;
+  String texttodisplay = "";
+  String res;
+  String op;
+  void buttonClicked(String buttonval) {
+    if (buttonval == "C") {
+      texttodisplay = "";
+      firstnum = 0;
+      secondnum = 0;
+      res = "";
+    } else if (buttonval == "+" ||
+        buttonval == "-" ||
+        buttonval == "*" ||
+        buttonval == "/") {
+      firstnum = int.parse(texttodisplay);
+      res = '';
+      op = buttonval;
+    } else if (buttonval == "=") {
+      secondnum = int.parse(texttodisplay);
+      if (op == "+") res = (firstnum + secondnum).toString();
+      if (op == "-") res = (firstnum - secondnum).toString();
+      if (op == "*") res = (firstnum * secondnum).toString();
+      if (op == "/") res = (firstnum / secondnum).toString();
+    } else {
+      res = int.parse(texttodisplay + buttonval).toString();
+    }
+    setState(() {
+      texttodisplay = res;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +84,7 @@ class _MyHomeState extends State<MyHome> {
               padding: EdgeInsets.all(18),
               alignment: Alignment.bottomRight,
               child: Text(
-                "Text",
+                "$texttodisplay",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             )),
